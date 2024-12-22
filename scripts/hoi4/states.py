@@ -93,7 +93,7 @@ if beta:
     out_filename = "out/states_beta.txt"
 else:
     out_filename = "out/states.txt"
-with open(out_filename, "w") as out:
+with open(out_filename, "w", encoding = 'utf_8_sig') as out:
     out.write(pyradox.table.make_table(states, 'wiki', columns, sort_function = lambda key, value: value['id']))
 
 if beta:

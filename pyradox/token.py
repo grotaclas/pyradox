@@ -42,8 +42,8 @@ def make_token_string(value):
     
 token_patterns = [
     ('time', r'-?\d+\.\d+\.\d+(\.\d+)?\b'),
-    ('float', r'-?(\d+\.\d*|\d*\.\d+)\b'),
-    ('int', r'-?\d+\b'),
+    ('float', r'-?(\d+\.\d*|\d*\.\d+)\b(?![a-zA-Z0-9.])'), # negative lookahead to avoid matching the first part of keys which start with a number followed by a dot
+    ('int', r'-?\d+\b(?!\.)'), # negative lookahead to avoid matching the first part of keys which start with a number followed by a dot
     ('bool', r'(yes|no)\b'),
     ('str', r'"([^"\\\n]|\\.)*["\n]|[^#=\{\}\s]+'), # allow strings to end with newline instead of "; do escape characters exist?
 ]

@@ -52,6 +52,7 @@ key_constructors = {
     'time' : Time,
     'int' : int,
     'str' : str,
+    'float' : float
     }
 
 constructors = {

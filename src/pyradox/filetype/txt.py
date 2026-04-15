@@ -290,7 +290,9 @@ class TreeParseState():
             else:
                 # Process following values as a group.
                 if self.in_group:
-                    raise ParseError('%s, line %d: Error: Cannot nest groups inside groups.' % (self.filename, token_line_number + 1))
+                    value, self.pos = parse_tree(self.token_data, self.filename, self.pos)
+                    self.append_to_result(value)
+                    self.next = self.process_value # Continue parsing the parent group
                 else:
                     self.in_group = True
                     self.next = self.process_value

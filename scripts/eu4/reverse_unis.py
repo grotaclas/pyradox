@@ -4,7 +4,7 @@ import os
 
 
 import pyradox
-
+from pyradox.token import make_token_string
 
 import ideaoptions
 
@@ -17,6 +17,8 @@ bonus_sources = {}
 localisation_sources = ['powers_and_ideas', 'nw2', 'res_publica', "aow", 'eldorado', 'common_sense']
 
 def add_bonus(bonus, title, value):
+    if bonus == 'effect':
+        return
     if bonus not in bonus_sources:
         bonus_sources[bonus] = []
     bonus_sources[bonus].append((value, title))
@@ -34,21 +36,21 @@ def value_string(bonus, value):
     elif isinstance(value, float):
         return '{{%s|%+0.2f}}'% (color, value)
     else:
-        return '{{%s|%s}}' % (color, pyradox.make_token_string(value))
+        return '{{%s|%s}}' % (color, make_token_string(value))
 
 def process_idea_group(key, tree):
     # if 'free' not in tree or not tree['free']: return # free groups only
     
-    ig_name = pyradox.yml.get_localisation(key)
+    ig_name = pyradox.yml.get_localisation(key, 'EU4')
 
     if 'start' in tree:
         traditions = tree['start']
-        title = pyradox.yml.get_localisation('%s_start' % key) or key
+        title = pyradox.yml.get_localisation('%s_start' % key, 'EU4') or key
         for bonus, value in traditions.items():
             add_bonus(bonus, title, value)
 
     ambitions = tree['bonus']
-    title = pyradox.yml.get_localisation('%s_bonus' % key) or key
+    title = pyradox.yml.get_localisation('%s_bonus' % key, 'EU4') or key
     for bonus, value in ambitions.items():
         add_bonus(bonus, title, value)
 
@@ -59,7 +61,7 @@ def process_idea_group(key, tree):
             bonuses = existing_ideas[idea]
         else:
             existing_ideas[idea] = bonuses
-        idea_name = pyradox.yml.get_localisation(idea)
+        idea_name = pyradox.yml.get_localisation(idea, 'EU4')
         title = '%s %d: %s' % (ig_name, idx, idea_name)
         for bonus, value in bonuses.items():
             add_bonus(bonus, title, value)
@@ -88,9 +90,9 @@ wiki_page = ''
 for bonus in sorted(bonus_sources.keys()):
     sources = ['EU4', 'text', 'modifers', 'powers_and_ideas', 'nw2', 'res_publica', "aow"]
     bonus_title = (
-        pyradox.yml.get_localisation('modifier_%s' % bonus)
-        or pyradox.yml.get_localisation('yearly_%s' % bonus)
-        or pyradox.yml.get_localisation(bonus)
+        pyradox.yml.get_localisation('modifier_%s' % bonus, 'EU4')
+        or pyradox.yml.get_localisation('yearly_%s' % bonus, 'EU4')
+        or pyradox.yml.get_localisation(bonus, 'EU4')
         )
     if not bonus_title:
         print("Missing title:" + bonus)

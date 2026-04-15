@@ -9,7 +9,7 @@ import pyradox
 from PIL import Image
 
 # Load the province map using the default location set in pyradox.
-province_map = pyradox.worldmap.ProvinceMap()
+province_map = pyradox.worldmap.ProvinceMap(game='EU4')
 
 colormap = {}
 for filename, data in pyradox.txt.parse_dir(os.path.join(pyradox.get_game_directory('EU4'), 'history', 'provinces'), verbose=False):
@@ -25,7 +25,7 @@ out = out.resize((out.size[0] * 2, out.size[1] * 2), Image.NEAREST)
 # Create the map labels.
 textmap = {}
 colormap = {}
-for province_id in province_map.positions.keys():
+for province_id in province_map.positions['centroid'].keys():
     textmap[province_id] = '%d' % province_id
     if province_map.is_water_province(province_id):
         colormap[province_id] = (0, 0, 0)

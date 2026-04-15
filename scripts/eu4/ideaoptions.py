@@ -196,8 +196,11 @@ def is_percent_bonus(bonus_name):
     return isinstance(lower_bound, float)
 
 def is_reversed(bonus_name):
-    idx = bonus_types.index(bonus_name)
-    return bonus_normal_values[idx] < 0.0
+    if bonus_name in bonus_types:
+        idx = bonus_types.index(bonus_name)
+        return bonus_normal_values[idx] < 0.0
+    else:
+        return False
 
 disallow_positive_duplicates = set([
     "hostile_attrition",

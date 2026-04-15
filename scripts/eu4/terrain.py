@@ -4,8 +4,7 @@ import pyradox
 
 import os
 from PIL import Image
-
-province_map = pyradox.worldmap.ProvinceMap()
+province_map = pyradox.worldmap.ProvinceMap('EU4')
 terrain_map_image = Image.open('in/terrain.png')
 terrain_txt = pyradox.txt.parse_file(os.path.join(os.path.join(pyradox.get_game_directory('EU4'), 'map', 'terrain.txt')))
 
@@ -13,7 +12,7 @@ terrain_by_color = {}
 
 for terrain_name, terrain in terrain_txt['categories'].items():
     if 'color' in terrain:
-        color = tuple(terrain['color'])
+        color = tuple(terrain.find_all('color'))
         terrain_by_color[color] = (terrain_name, terrain)
 
 def get_province_terrain(province_id):
